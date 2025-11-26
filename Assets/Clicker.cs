@@ -1,0 +1,53 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Analytics;
+using UnityEngine.UI;
+
+public class Clicker : MonoBehaviour
+{
+    public ulong clickCount = 0;
+    public TextMeshProUGUI Score;
+    bool Flip = true;
+    public void IncreaseScore()
+    {
+        clickCount++;
+        print(clickCount);
+        Score.text = clickCount.ToString();
+        if (Flip)
+        {
+
+            Flip = false;
+            return;
+
+        }
+        if (!Flip)
+        {
+            Flip = true;
+            return;
+        }
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Flip)
+        {
+            transform.Rotate(Vector3.forward * 0.2f);
+            transform.Rotate(Vector3.up * 0.2f);
+            transform.Rotate(Vector3.right * 0.2f);
+
+        }
+        if (!Flip)
+        {
+            transform.Rotate(Vector3.back * 0.2f);
+            transform.Rotate(Vector3.down * 0.2f);
+            transform.Rotate(Vector3.left * 0.2f);
+
+
+        }
+    }
+}
