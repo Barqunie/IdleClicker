@@ -7,16 +7,23 @@ using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
 
+
 public class Clicker : MonoBehaviour
 {
-    public ulong clickCount = 0;
+
+    public ulong ClickPoints = 1;
     public TextMeshProUGUI Score;
     bool Flip = true;
+    public ulong Multiplier = 1;
+    public ulong Point = 0;
     public void IncreaseScore()
     {
-        clickCount++;
-        print(clickCount);
-        Score.text = clickCount.ToString();
+
+
+        Point += Points(Multiplier, ClickPoints);
+        Score.text = Point.ToString();
+
+        print(Multiplier);
         if (Flip)
         {
 
@@ -50,4 +57,12 @@ public class Clicker : MonoBehaviour
 
         }
     }
+    ulong Points(ulong a, ulong b)
+    {
+        ulong c;
+        c = a * b;
+        return c;
+
+    }
+
 }
