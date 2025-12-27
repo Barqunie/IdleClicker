@@ -1,4 +1,4 @@
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 
 public class Clicker : MonoBehaviour
@@ -16,12 +17,19 @@ public class Clicker : MonoBehaviour
     bool Flip = true;
     public ulong Multiplier = 1;
     public ulong Point = 0;
+
+    [SerializeField] private GameObject floatingTextPrefab;
+    [SerializeField] private Transform floatingSpawnPoint;
+
     public void IncreaseScore()
     {
 
 
         Point += Points(Multiplier, ClickPoints);
         Score.text = Point.ToString();
+
+       GameObject gainedCoinValue = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity) as GameObject;
+        gainedCoinValue.GetComponent<TextMesh>().text = "+ " + Points(Multiplier, ClickPoints).ToString();
 
         print(Multiplier);
         if (Flip)
@@ -36,6 +44,7 @@ public class Clicker : MonoBehaviour
             Flip = true;
             return;
         }
+        gameObject.AddComponent<FloatingText>();
     }
 
     // Update is called once per frame
@@ -56,6 +65,7 @@ public class Clicker : MonoBehaviour
 
 
         }
+
     }
     ulong Points(ulong a, ulong b)
     {
