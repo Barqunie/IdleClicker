@@ -29,7 +29,7 @@ public class FloatingText : MonoBehaviour
 
     private void Start()
     {
-        _rigidbody.velocity = new Vector2(Random.Range(-InitialxVelocityRange, InitialxVelocityRange), InitialyVelocity);
+        _rigidbody.linearVelocity = new Vector2(Random.Range(-InitialxVelocityRange, InitialxVelocityRange), InitialyVelocity);
         Destroy(gameObject, LifeTime);
     }
 
