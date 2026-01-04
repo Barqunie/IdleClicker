@@ -7,7 +7,7 @@ public class Buy : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Clicker clicker;
-    private ulong costGPU = 100;
+    private ulong costGPU = 5;
     private ulong costClicker = 5;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -27,9 +27,12 @@ public class Buy : MonoBehaviour
     {
 
         if (clicker.Point >= costGPU)
+        {
             clicker.Point -= costGPU;
             costGPU *= 2;
-        clicker.GPU++;
+            clicker.GPU++;
+        }
+           
 
     }
     void AddPointsPerSec()
@@ -39,8 +42,13 @@ public class Buy : MonoBehaviour
     }
     public void BuyClicker()
     {
-        clicker.Multiplier++;
-        costClicker *= 3;
+        if (clicker.Point >= costClicker) 
+        {
+            clicker.Point -= costClicker;
+            clicker.Multiplier++;
+            costClicker *= 3;
+        }
+          
     }
     public void BuyCoin()
     {
