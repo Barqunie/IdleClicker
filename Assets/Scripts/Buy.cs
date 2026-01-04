@@ -7,8 +7,8 @@ public class Buy : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Clicker clicker;
-    private ulong costGPU = 4;
-    private ulong costClicker = 100;
+    private ulong costGPU = 100;
+    private ulong costClicker = 200;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
