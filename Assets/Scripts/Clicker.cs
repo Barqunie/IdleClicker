@@ -27,7 +27,7 @@ public class Clicker : MonoBehaviour
 
 
         Point += Points(Multiplier, ClickPoints);
-        Score.text = Point.ToString();
+      
 
        GameObject gainedCoinValue = Instantiate(floatingTextPrefab, transform.position, Quaternion.identity) as GameObject;
         gainedCoinValue.GetComponent<TextMesh>().text = "+ " + Points(Multiplier, ClickPoints).ToString();
@@ -66,7 +66,7 @@ public class Clicker : MonoBehaviour
 
 
         }
-
+        Score.text = Point.ToString();
     }
     ulong Points(ulong a, ulong b)
     {
