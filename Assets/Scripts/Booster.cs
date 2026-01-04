@@ -78,4 +78,8 @@ public class Booster : MonoBehaviour
         ulong number = (clicker != null) ? clicker.Multiplier : 1;
         multiplierText.text = $"x{number}";
     }
+    private void Update()
+    {
+        UpdateMultiplierUI();
+    }
 }
