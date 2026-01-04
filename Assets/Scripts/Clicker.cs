@@ -17,6 +17,7 @@ public class Clicker : MonoBehaviour
     bool Flip = true;
     public ulong Multiplier = 1;
     public ulong Point = 0;
+    public ulong GPU;
 
     [SerializeField] private GameObject floatingTextPrefab;
     [SerializeField] private Transform floatingSpawnPoint;
