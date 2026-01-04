@@ -34,5 +34,6 @@ public class BuyGPU : MonoBehaviour
     void AddPointsPerSec()
     {
         clicker.Point += clicker.GPU * 2;
+        
     }
 }
