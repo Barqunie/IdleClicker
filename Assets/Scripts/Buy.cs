@@ -3,11 +3,12 @@ using System.Collections;
 using UnityEngine.SocialPlatforms.Impl;
 using Unity.VisualScripting;
 
-public class BuyGPU : MonoBehaviour
+public class Buy : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Clicker clicker;
-    private ulong cost = 4;
+    private ulong costGPU = 4;
+    private ulong costClicker = 100;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,12 +23,12 @@ public class BuyGPU : MonoBehaviour
         
     }
 
-    public void Buy()
+    public void BuyGPU()
     {
 
-        if (clicker.Point >= cost)
-            clicker.Point -= cost;
-            cost *= 2;
+        if (clicker.Point >= costGPU)
+            clicker.Point -= costGPU;
+            costGPU *= 2;
         clicker.GPU++;
 
     }
@@ -35,5 +36,14 @@ public class BuyGPU : MonoBehaviour
     {
         clicker.Point += clicker.GPU * 2;
         
+    }
+    public void BuyClicker()
+    {
+        clicker.ClickPoints++;
+        costClicker *= 3;
+    }
+    public void BuyCoin()
+    {
+
     }
 }
