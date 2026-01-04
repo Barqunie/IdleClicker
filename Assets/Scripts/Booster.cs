@@ -12,7 +12,7 @@ public class Booster : MonoBehaviour
     [SerializeField] private TextMeshProUGUI multiplierText;    
 
     [Header("Boost Settings")]
-    [SerializeField] private float multiplierBonus = 9;   
+    [SerializeField] private ulong multiplierBonus = 9;   
     [SerializeField] private float boostDuration = 10f;
 
     [Header("Random Timing (seconds)")]

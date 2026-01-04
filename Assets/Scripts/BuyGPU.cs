@@ -20,7 +20,7 @@ public class BuyGPU : MonoBehaviour
         
     }
 
-    private void Buy()
+    public void Buy()
     {
 
         if (clicker.Point >= cost)
