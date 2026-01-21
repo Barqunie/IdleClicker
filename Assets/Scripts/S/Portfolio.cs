@@ -5,9 +5,9 @@ public class Portfolio : MonoBehaviour
 {
     [Header("Refs")]
     public CoinMarket market;
+    public Clicker clicker; // cash yerine score kaynaðý
 
     [Header("Balances")]
-    public float cash = 1000f;
     public float btc = 0f;
 
     [Header("Fee")]
@@ -20,6 +20,8 @@ public class Portfolio : MonoBehaviour
     public TMP_Text btcText;
     public TMP_Text netText;
 
+    ulong Cash => clicker ? clicker.Point : 0UL;
+
     void Start()
     {
         RefreshUI();
@@ -28,51 +30,66 @@ public class Portfolio : MonoBehaviour
     public void RefreshUI()
     {
         float price = market ? market.Price : 0f;
+        ulong cash = Cash;
 
         if (priceText) priceText.SetText($"BTC: ${price:0,0}");
-        if (cashText) cashText.SetText($"Cash: {cash:0,0.##}");
+        if (cashText) cashText.SetText($"Cash: {cash:0,0}");
         if (btcText) btcText.SetText($"BTC: {btc:0.####}");
-        if (netText) netText.SetText($"Net: {(cash + btc * price):0,0.##}");
+        if (netText) netText.SetText($"Net: {(cash + (double)btc * price):0,0.##}");
     }
 
-    // usdAmount: kaç dolarlýk BTC almak istiyoruz
+    // usdAmount: kaç dolar deðerinde BTC almak istiyorsun
     public bool Buy(float usdAmount)
     {
-        if (!market) return false;
+        if (!market || !clicker) return false;
+
         usdAmount = Mathf.Max(0f, usdAmount);
         if (usdAmount <= 0f) return false;
 
         float price = market.Price;
+
         float fee = usdAmount * feeRate;
         float total = usdAmount + fee;
 
-        if (cash < total) return false;
+        // Clicker.Point ulong -> total float, yuvarlayýp keselim
+        ulong totalUL = (ulong)Mathf.CeilToInt(total);
+
+        if (clicker.Point < totalUL) return false;
 
         float btcBought = usdAmount / price;
-        cash -= total;
+
+        clicker.Point -= totalUL; //  para düþ
         btc += btcBought;
+
+        // Clicker UI’sý güncellenmiyorsa:
+        if (clicker.Score) clicker.Score.text = clicker.Point.ToString();
 
         RefreshUI();
         return true;
     }
 
-    // usdAmount: kaç dolarlýk BTC satmak istiyoruz
+    // usdAmount kaç dolar deðerinde BTC satmak istiyorsun
     public bool Sell(float usdAmount)
     {
-        if (!market) return false;
+        if (!market || !clicker) return false;
+
         usdAmount = Mathf.Max(0f, usdAmount);
         if (usdAmount <= 0f) return false;
 
         float price = market.Price;
-        float btcNeeded = usdAmount / price;
 
+        float btcNeeded = usdAmount / price;
         if (btc < btcNeeded) return false;
 
         float fee = usdAmount * feeRate;
         float received = usdAmount - fee;
 
+        ulong receivedUL = (ulong)Mathf.FloorToInt(received);
+
         btc -= btcNeeded;
-        cash += received;
+        clicker.Point += receivedUL; //  para ekle
+
+        if (clicker.Score) clicker.Score.text = clicker.Point.ToString();
 
         RefreshUI();
         return true;
