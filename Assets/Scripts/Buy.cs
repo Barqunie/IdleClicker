@@ -1,57 +1,64 @@
 using UnityEngine;
-using System.Collections;
-using UnityEngine.SocialPlatforms.Impl;
-using Unity.VisualScripting;
+using TMPro;
+using UnityEngine.UI;
 
 public class Buy : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private Clicker clicker;
-    private ulong costGPU = 5;
-    private ulong costClicker = 5;
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [Header("Costs")]
+    [SerializeField] private ulong costGPU = 5;
+    [SerializeField] private ulong costClicker = 5;
+
+    [Header("UI")]
+    [SerializeField] private TMP_Text pointText;
+    [SerializeField] private TMP_Text gpuCostText;
+    [SerializeField] private TMP_Text clickerCostText;
     void Start()
     {
-        if (clicker == null) clicker = FindFirstObjectByType<Clicker>();
-        InvokeRepeating(nameof(AddPointsPerSec), 1f, 1f);
-    }
+        if (clicker == null)
+            clicker = FindFirstObjectByType<Clicker>();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        InvokeRepeating(nameof(AddPointsPerSec), 1f, 1f);
+        UpdateUI();
     }
 
     public void BuyGPU()
     {
-
         if (clicker.Point >= costGPU)
         {
             clicker.Point -= costGPU;
-            costGPU *= 2;
             clicker.GPU++;
-        }
-           
+            costGPU *= 2;
 
+            UpdateUI();
+        }
     }
-    void AddPointsPerSec()
-    {
-        clicker.Point += clicker.GPU * 2;
-        
-    }
+
     public void BuyClicker()
     {
-        if (clicker.Point >= costClicker) 
+        if (clicker.Point >= costClicker)
         {
             clicker.Point -= costClicker;
             clicker.Multiplier++;
             costClicker *= 3;
+
+            UpdateUI();
         }
-          
     }
-    public void BuyCoin()
+
+    void AddPointsPerSec()
     {
+        clicker.Point += clicker.GPU * 2;
+        UpdateUI();
+    }
+
+    void UpdateUI()
+    {
+        if (pointText) pointText.text = $"POINTS: {clicker.Point}";
+        if (gpuCostText) gpuCostText.text = $"COST: {costGPU}";
+        if (clickerCostText) clickerCostText.text = $"COST: {costClicker}";
 
     }
 }
