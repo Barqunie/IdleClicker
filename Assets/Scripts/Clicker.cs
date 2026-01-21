@@ -25,7 +25,7 @@ public class Clicker : MonoBehaviour
     public void IncreaseScore()
     {
 
-
+        HapticsAdvanced.Medium();
         Point += Points(Multiplier, ClickPoints);
       
 
