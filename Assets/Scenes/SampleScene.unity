@@ -1123,14 +1123,14 @@ RectTransform:
   m_GameObject: {fileID: 362096522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1405883216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 238}
+  m_AnchoredPosition: {x: 0, y: 252}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &362096524
@@ -2026,7 +2026,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 281.20004, y: -605}
+  m_AnchoredPosition: {x: 281.20007, y: -605}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &559210241
@@ -2701,10 +2701,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2b9f41f912c79242912b6dc22ee230a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LineChart
-  market: {fileID: 0}
-  chartArea: {fileID: 0}
-  maxPoints: 120
-  padding: 10
 --- !u!120 &674903575
 LineRenderer:
   serializedVersion: 3
@@ -3118,10 +3114,10 @@ MonoBehaviour:
   clicker: {fileID: 1323046240}
   market: {fileID: 747661241}
   inBTC: 0
-  priceText: {fileID: 0}
-  btcText: {fileID: 0}
-  nextMoveText: {fileID: 0}
-  modeText: {fileID: 0}
+  priceText: {fileID: 1868152923}
+  btcText: {fileID: 993528003}
+  nextMoveText: {fileID: 848360686}
+  modeText: {fileID: 362096524}
 --- !u!1 &820480982
 GameObject:
   m_ObjectHideFlags: 0
@@ -3228,14 +3224,14 @@ RectTransform:
   m_GameObject: {fileID: 848360684}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1405883216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 112}
+  m_AnchoredPosition: {x: 0, y: 24}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &848360686
@@ -3356,7 +3352,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &859085973
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3648,14 +3644,14 @@ RectTransform:
   m_GameObject: {fileID: 993528001}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1405883216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -10}
+  m_AnchoredPosition: {x: 0, y: 137}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &993528003
@@ -4959,23 +4955,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 931dd6153ef404148ba7a6b4cd6fbeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TradePanel
-  portfolio: {fileID: 0}
-  buyTabButton: {fileID: 559210241}
-  sellTabButton: {fileID: 1875198282}
-  executeButton: {fileID: 572621615}
-  executeLabel: {fileID: 980800795}
-  selectedAmountText: {fileID: 368555487}
-  feedbackText: {fileID: 653799815}
-  amountButtons:
-  - {fileID: 1999425990}
-  - {fileID: 1461512090}
-  - {fileID: 1841555157}
-  amountButtonLabels:
-  - {fileID: 95115998}
-  - {fileID: 2039098225}
-  - {fileID: 1160968951}
-  tradeMode: 0
-  amountMode: 0
 --- !u!114 &1419563648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5479,7 +5458,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 285.99997, y: -765}
+  m_AnchoredPosition: {x: 286, y: -765}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841555157
@@ -5591,14 +5570,14 @@ RectTransform:
   m_GameObject: {fileID: 1868152921}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1405883216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 50}
+  m_AnchoredPosition: {x: 0, y: -91}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1868152923
