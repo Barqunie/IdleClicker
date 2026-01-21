@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ChartTexture : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private CoinMarket market;
+    [SerializeField] private BitcoinMarket market;
     [SerializeField] private RawImage img;
     [SerializeField] private TMP_Text valueText; // optional (crosshair value)
 
