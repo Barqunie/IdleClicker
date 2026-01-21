@@ -38,7 +38,7 @@ public class Portfolio : MonoBehaviour
         if (netText) netText.SetText($"Net: {(cash + (double)btc * price):0,0.##}");
     }
 
-    // usdAmount: kaç dolar deðerinde BTC almak istiyorsun
+    
     public bool Buy(float usdAmount)
     {
         if (!market || !clicker) return false;
@@ -51,7 +51,8 @@ public class Portfolio : MonoBehaviour
         float fee = usdAmount * feeRate;
         float total = usdAmount + fee;
 
-        // Clicker.Point ulong -> total float, yuvarlayýp keselim
+
+
         ulong totalUL = (ulong)Mathf.CeilToInt(total);
 
         if (clicker.Point < totalUL) return false;
@@ -61,14 +62,14 @@ public class Portfolio : MonoBehaviour
         clicker.Point -= totalUL; //  para düþ
         btc += btcBought;
 
-        // Clicker UI’sý güncellenmiyorsa:
+
         if (clicker.Score) clicker.Score.text = clicker.Point.ToString();
 
         RefreshUI();
         return true;
     }
 
-    // usdAmount kaç dolar deðerinde BTC satmak istiyorsun
+
     public bool Sell(float usdAmount)
     {
         if (!market || !clicker) return false;

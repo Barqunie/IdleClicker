@@ -87,7 +87,7 @@ public class ChartTexture : MonoBehaviour
         if (yMidText) yMidText.SetText($"{mid:0,0}");
         if (yBottomText) yBottomText.SetText($"{min:0,0}");
 
-        // Trend rengi: yeþil / kýrmýzý (son deðer önceki deðerden büyükse yeþil daha mantýklý)
+        // Trend rengi: yeþil / kýrmýzý 
         bool up = data[data.Count - 1] >= data[data.Count - 2];
         Color32 lineColor = up ? new Color32(90, 255, 160, 255) : new Color32(255, 90, 120, 255);
         Color32 fillColor = new Color32(lineColor.r, lineColor.g, lineColor.b, (byte)fillAlpha);

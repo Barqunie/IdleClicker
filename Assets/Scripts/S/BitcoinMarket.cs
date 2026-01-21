@@ -77,7 +77,7 @@ public class BitcoinMarket : MonoBehaviour
             PrevPrice = startPrice;
             Price = startPrice;
 
-            // bir sonraki tick preview üret
+
             NextPrice = Price * (1f + SamplePctChange());
         }
 
@@ -107,13 +107,12 @@ public class BitcoinMarket : MonoBehaviour
         }
         else
         {
-            // preview olarak NextPrice için zaten bir pct üretiyoruz, onu uygula:
-            // (istersen her tick yeni pct üretip uygula da olur)
+
             float pct = (NextPrice - Price) / Mathf.Max(Price, 1f);
             Price *= (1f + pct);
             Price = Mathf.Max(1f, Price);
 
-            // sonraki tick preview:
+
             NextPrice = Price * (1f + SamplePctChange());
         }
 
@@ -131,7 +130,7 @@ public class BitcoinMarket : MonoBehaviour
         // noise: [-1..1] * volatility
         float noise = UnityEngine.Random.Range(-1f, 1f) * volatility;
 
-        // mean reversion: price -> fairValue
+
         float mr = (fairValue - Price) / Mathf.Max(fairValue, 1f) * meanReversion;
 
         // event: pump/dump
@@ -148,7 +147,7 @@ public class BitcoinMarket : MonoBehaviour
         return (NextPrice - Price) / Price;
     }
 
-    // Editor’da mode değiştirince resetlemek istersen
+
     public void ResetMarket()
     {
         Init();

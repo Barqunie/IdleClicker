@@ -48,7 +48,7 @@ public class Clicker : MonoBehaviour
         gameObject.AddComponent<FloatingText>();
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         if (Flip)
