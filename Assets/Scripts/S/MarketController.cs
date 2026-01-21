@@ -10,19 +10,20 @@ public class TradingController : MonoBehaviour
     [Header("Mode")]
     [SerializeField] private bool inBTC = false;
 
-    // Gerçek BTC miktarý burada durur (sabit kalacak olan bu)
     private double btcHoldings = 0.0;
 
     [Header("UI (TMP)")]
-    [SerializeField] private TextMeshProUGUI priceText;       // BTC PRICE
-    [SerializeField] private TextMeshProUGUI btcText;         // BTC: 0.0000
-    [SerializeField] private TextMeshProUGUI nextMoveText;    // NEXT: +12.0%
-    [SerializeField] private TextMeshProUGUI modeText;        // MODE: BTC/CASH
-
+    [SerializeField] private TextMeshProUGUI priceText;
+    [SerializeField] private TextMeshProUGUI btcText;
+    [SerializeField] private TextMeshProUGUI nextMoveText;
+    [SerializeField] private TextMeshProUGUI modeText;
+    [SerializeField] private TextMeshProUGUI pointTxt; // CASH text
 
     void Start()
     {
         if (!clicker) clicker = FindFirstObjectByType<Clicker>();
+        if (!market) market = FindFirstObjectByType<BitcoinMarket>();
+
         RefreshUI();
     }
 
@@ -36,10 +37,15 @@ public class TradingController : MonoBehaviour
         if (market != null) market.OnTick -= HandleTick;
     }
 
+    void Update()
+    {
+        // Clicker.Point her frame deðiþiyor (týklayýnca), sadece CASH yazýsýný güncelle
+        if (clicker != null && pointTxt != null)
+            pointTxt.text = $"CASH: {clicker.Point:0}";
+    }
+
     void HandleTick()
     {
-        // Fiyat deðiþince para/btc ÇEVÝRME YOK.
-        // Sadece UI güncelle.
         RefreshUI();
     }
 
@@ -48,12 +54,11 @@ public class TradingController : MonoBehaviour
         if (clicker == null || market == null) return;
         if (market.Price <= 0.0001f) return;
 
-        // Tüm cash ile BTC al (istersen sonra kýsmi miktar ekleriz)
-        double cash = clicker.Point;               // cash (ulong) -> double
-        double bought = cash / market.Price;       // BTC miktarý
+        double cash = clicker.Point;
+        double bought = cash / market.Price;
 
         btcHoldings += bought;
-        clicker.Point = 0;                         // cash bitti
+        clicker.Point = 0;
         inBTC = true;
 
         RefreshUI();
@@ -64,11 +69,10 @@ public class TradingController : MonoBehaviour
         if (clicker == null || market == null) return;
         if (market.Price <= 0.0001f) return;
 
-        // Tüm BTC sat -> cash
         double cash = btcHoldings * market.Price;
 
         if (cash < 0) cash = 0;
-        clicker.Point = (ulong)cash;   // küsurat kaybolur (istersen ayrý cashDouble tutarýz)
+        clicker.Point = (ulong)cash;
         btcHoldings = 0.0;
 
         inBTC = false;
@@ -80,13 +84,14 @@ public class TradingController : MonoBehaviour
         if (clicker == null || market == null) return;
 
         if (priceText) priceText.text = $"BTC PRICE: {market.Price:0}";
-
-        // BTC miktarý artýk "bölme ile türetilmiyor", direkt holding gösteriliyor
         if (btcText) btcText.text = $"BTC: {btcHoldings:0.0000}";
 
         float p = market.NextPercent() * 100f;
         if (nextMoveText) nextMoveText.text = $"NEXT: {(p >= 0 ? "+" : "")}{p:0.0}%";
 
         if (modeText) modeText.text = inBTC ? "MODE: BTC" : "MODE: CASH";
+
+        // Ýlk açýlýþta da CASH yazsýn
+        if (pointTxt) pointTxt.text = $"CASH: {clicker.Point:0}";
     }
 }
