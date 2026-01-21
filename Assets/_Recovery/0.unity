@@ -2071,7 +2071,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 281.20007, y: -605}
+  m_AnchoredPosition: {x: 281.20004, y: -605}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &559210241
@@ -3418,7 +3418,7 @@ MonoBehaviour:
   texWidth: 640
   texHeight: 360
   padding: 16
-  lineThickness: 2
+  lineThickness: 3
   fillAlpha: 60
   gridAlpha: 30
   drawGrid: 1
@@ -3437,7 +3437,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CoinMarket
   Price: 50000
   FairValue: 50000
-  UpdateInterval: 0.2
+  UpdateInterval: 1
   DriftPerSec: 0
   Volatility: 0.015
   MeanReversion: 0.02
@@ -5472,7 +5472,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 286, y: -765}
+  m_AnchoredPosition: {x: 285.99997, y: -765}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841555157

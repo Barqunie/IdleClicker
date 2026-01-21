@@ -6,9 +6,14 @@ using UnityEngine.UI;
 public class ChartTexture : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] private BitcoinMarket market;
+    [SerializeField] private CoinMarket market;
     [SerializeField] private RawImage img;
-    [SerializeField] private TMP_Text valueText; // optional
+    [SerializeField] private TMP_Text valueText; // optional (crosshair value)
+
+    [Header("Y Axis Labels (TMP)")]
+    [SerializeField] private TMP_Text yTopText;
+    [SerializeField] private TMP_Text yMidText;
+    [SerializeField] private TMP_Text yBottomText;
 
     [Header("Texture")]
     [SerializeField] private int texWidth = 640;
@@ -37,7 +42,8 @@ public class ChartTexture : MonoBehaviour
         clearPixels = new Color32[texWidth * texHeight];
         for (int i = 0; i < clearPixels.Length; i++) clearPixels[i] = new Color32(0, 0, 0, 0);
 
-        Clear(); tex.Apply();
+        Clear();
+        tex.Apply();
     }
 
     void Update()
@@ -65,6 +71,7 @@ public class ChartTexture : MonoBehaviour
         int plotH = h - padding * 2;
 
         List<float> data = market.History;
+
         float min = float.MaxValue, max = float.MinValue;
         for (int i = 0; i < data.Count; i++)
         {
@@ -74,8 +81,14 @@ public class ChartTexture : MonoBehaviour
         }
         if (Mathf.Approximately(min, max)) max = min + 1f;
 
-        // Trend rengi: yeþil / kýrmýzý
-        bool up = data[data.Count - 1] >= data[0];
+        //  Y-axis label’larý yaz
+        float mid = (min + max) * 0.5f;
+        if (yTopText) yTopText.SetText($"{max:0,0}");
+        if (yMidText) yMidText.SetText($"{mid:0,0}");
+        if (yBottomText) yBottomText.SetText($"{min:0,0}");
+
+        // Trend rengi: yeþil / kýrmýzý (son deðer önceki deðerden büyükse yeþil daha mantýklý)
+        bool up = data[data.Count - 1] >= data[data.Count - 2];
         Color32 lineColor = up ? new Color32(90, 255, 160, 255) : new Color32(255, 90, 120, 255);
         Color32 fillColor = new Color32(lineColor.r, lineColor.g, lineColor.b, (byte)fillAlpha);
 
@@ -92,7 +105,7 @@ public class ChartTexture : MonoBehaviour
             pts[i] = new Vector2Int(x, y);
         }
 
-        // fill: her x için altýný boya (basit ve hýzlý)
+        // fill
         for (int i = 0; i < pts.Length; i++)
         {
             int x = pts[i].x;
@@ -128,7 +141,6 @@ public class ChartTexture : MonoBehaviour
 
     void UpdateCrosshairText()
     {
-        // mouse ile test, mobilde parmakla çalýþtýrmak istersen Input.touches ekleriz
         Vector2 screen = Input.mousePosition;
 
         RectTransform rt = img.rectTransform;
@@ -169,12 +181,12 @@ public class ChartTexture : MonoBehaviour
     void DrawDot(int cx, int cy, int r, Color32 col)
     {
         for (int y = -r; y <= r; y++)
-        for (int x = -r; x <= r; x++)
-        {
-            int px = cx + x;
-            int py = cy + y;
-            if (px < 0 || px >= texWidth || py < 0 || py >= texHeight) continue;
-            tex.SetPixel(px, py, col);
-        }
+            for (int x = -r; x <= r; x++)
+            {
+                int px = cx + x;
+                int py = cy + y;
+                if (px < 0 || px >= texWidth || py < 0 || py >= texHeight) continue;
+                tex.SetPixel(px, py, col);
+            }
     }
 }
