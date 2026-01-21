@@ -20,23 +20,33 @@ public class MarketUI : MonoBehaviour
         if (marketPanel == null) return;
         marketPanel.SetActive(!marketPanel.activeSelf);
         CoinMesh.SetActive(false);
+
+
+        HapticsAdvanced.Light();
     }
     public void ToggleStore()
     {
         if (storePanel == null) return;
         storePanel.SetActive(!storePanel.activeSelf);
         CoinMesh.SetActive(false);
+
+
+        HapticsAdvanced.Light();
     }
 
     public void OpenMarket()
     {
         if (marketPanel == null) return;
         marketPanel.SetActive(true);
+
+        HapticsAdvanced.Light();
     }
     public void OpenStore()
     {
         if (storePanel == null) return;
         storePanel.SetActive(true);
+
+        HapticsAdvanced.Light();
     }
 
 
@@ -44,10 +54,15 @@ public class MarketUI : MonoBehaviour
     {
         if (marketPanel == null) return;
         marketPanel.SetActive(false); CoinMesh.SetActive(true);
+
+        HapticsAdvanced.Light();
     }
     public void CloseStore()
     {
         if (storePanel == null) return;
         storePanel.SetActive(false); CoinMesh.SetActive(true);
+
+
+        HapticsAdvanced.Light();
     }
 }

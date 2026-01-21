@@ -32,6 +32,8 @@ public class Buy : MonoBehaviour
             clicker.GPU++;
             costGPU *= 2;
 
+            HapticsAdvanced.Light();
+
             UpdateUI();
         }
     }
@@ -43,6 +45,8 @@ public class Buy : MonoBehaviour
             clicker.Point -= costClicker;
             clicker.Multiplier++;
             costClicker *= 3;
+
+            HapticsAdvanced.Light();
 
             UpdateUI();
         }
