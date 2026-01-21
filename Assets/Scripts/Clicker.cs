@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
+
 
 
 public class Clicker : MonoBehaviour
