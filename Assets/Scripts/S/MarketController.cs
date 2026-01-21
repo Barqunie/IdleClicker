@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class TradingController : MonoBehaviour
 {
@@ -12,8 +13,9 @@ public class TradingController : MonoBehaviour
     [Header("Trade Amount (CASH units)")]
     [SerializeField] private ulong selectedAmount = 0; // 0 => ALL-IN
 
-    // amount text'i geçici olarak uyarýya çevirmek için
-    private bool amountInsufficientFlag = false;
+    [Header("Feedback")]
+    [SerializeField] private float feedbackDuration = 2f;
+    private Coroutine feedbackCo;
 
     [Header("UI (TMP)")]
     [SerializeField] private TextMeshProUGUI priceText;
@@ -22,12 +24,14 @@ public class TradingController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI modeText;
     [SerializeField] private TextMeshProUGUI pointTxt;            // CASH
     [SerializeField] private TextMeshProUGUI selectedAmountText;  // AMOUNT
-    [SerializeField] private TextMeshProUGUI feedbackText;        // optional
+    [SerializeField] private TextMeshProUGUI feedbackText;        // FEEDBACK (hidden by default)
 
     void Start()
     {
         if (!clicker) clicker = FindFirstObjectByType<Clicker>();
         if (!market) market = FindFirstObjectByType<BitcoinMarket>();
+
+        HideFeedback();
         RefreshUI();
     }
 
@@ -35,11 +39,11 @@ public class TradingController : MonoBehaviour
     {
         if (market != null) market.OnTick += HandleTick;
 
+        // Market her açýldýðýnda ALL IN
         selectedAmount = 0;
-        amountInsufficientFlag = false;
 
+        HideFeedback();
         RefreshUI();
-
     }
 
     void OnDisable()
@@ -61,12 +65,10 @@ public class TradingController : MonoBehaviour
     public void AddAmount100() => AddAmount(100);
     public void AddAmount1000() => AddAmount(1000);
 
-    // RESET butonu buna baðlanacak
     public void ResetAmount()
     {
         selectedAmount = 0;
-        amountInsufficientFlag = false;
-        Say("");
+        HideFeedback();
         RefreshUI();
     }
 
@@ -74,17 +76,18 @@ public class TradingController : MonoBehaviour
     {
         if (clicker == null) return;
         selectedAmount = clicker.Point;
-        amountInsufficientFlag = false;
+        HideFeedback();
         RefreshUI();
     }
 
     void AddAmount(ulong add)
     {
+        // clamp YOK: sýnýrsýz biriksin (overflow korumasý var)
         ulong before = selectedAmount;
         selectedAmount += add;
-        if (selectedAmount < before) selectedAmount = ulong.MaxValue; // overflow korumasý
+        if (selectedAmount < before) selectedAmount = ulong.MaxValue;
 
-        amountInsufficientFlag = false;
+        HideFeedback();
         RefreshUI();
     }
 
@@ -99,15 +102,13 @@ public class TradingController : MonoBehaviour
 
         if (spend == 0)
         {
-            Say("No cash.");
+            ShowFeedback("NO CASH");
             return;
         }
 
         if (spend > cash)
         {
-            amountInsufficientFlag = true;
-            Say("Insufficient balance.");
-            RefreshUI();
+            ShowFeedback("INSUFFICIENT FUNDS");
             return;
         }
 
@@ -116,8 +117,7 @@ public class TradingController : MonoBehaviour
         btcHoldings += boughtBtc;
         clicker.Point = cash - spend;
 
-        amountInsufficientFlag = false;
-        Say($"+{boughtBtc:0.000000} BTC");
+        ShowFeedback($"+{boughtBtc:0.000000} BTC");
         RefreshUI();
     }
 
@@ -131,7 +131,7 @@ public class TradingController : MonoBehaviour
         {
             if (btcHoldings <= 0.0)
             {
-                Say("No BTC.");
+                ShowFeedback("NO BTC");
                 return;
             }
 
@@ -142,8 +142,7 @@ public class TradingController : MonoBehaviour
             clicker.Point += (ulong)cashOut;
             btcHoldings = 0.0;
 
-            amountInsufficientFlag = false;
-            Say($"SOLD ALL: {(ulong)cashOut:0} CASH");
+            ShowFeedback($"SOLD ALL: {(ulong)cashOut:0} CASH");
             RefreshUI();
             return;
         }
@@ -153,27 +152,24 @@ public class TradingController : MonoBehaviour
 
         if (needBtc <= 0.0)
         {
-            Say("Invalid amount.");
+            ShowFeedback("INVALID AMOUNT");
             return;
         }
 
         if (needBtc > btcHoldings)
         {
-            // burada balance = BTC bakiyesi, texti yine uyarýya çeviriyoruz
-            amountInsufficientFlag = true;
-            Say("Insufficient BTC.");
-            RefreshUI();
+            ShowFeedback("INSUFFICIENT BTC");
             return;
         }
 
         btcHoldings -= needBtc;
         clicker.Point += selectedAmount;
 
-        amountInsufficientFlag = false;
-        Say($"-{needBtc:0.000000} BTC");
+        ShowFeedback($"-{needBtc:0.000000} BTC");
         RefreshUI();
     }
 
+    // ---------- UI ----------
     void RefreshUI()
     {
         if (clicker == null || market == null) return;
@@ -196,19 +192,42 @@ public class TradingController : MonoBehaviour
     {
         if (selectedAmountText == null) return;
 
-        if (amountInsufficientFlag && selectedAmount != 0)
-        {
-            selectedAmountText.text = "AMOUNT: INSUFFICIENT BALANCE";
-            return;
-        }
-
         selectedAmountText.text = selectedAmount == 0
             ? "AMOUNT: ALL IN"
             : $"AMOUNT: {selectedAmount:0}";
     }
 
-    void Say(string msg)
+    // ---------- Feedback (show for 2s then hide) ----------
+    void HideFeedback()
     {
-        if (feedbackText) feedbackText.text = msg;
+        if (feedbackCo != null)
+        {
+            StopCoroutine(feedbackCo);
+            feedbackCo = null;
+        }
+
+        if (feedbackText != null)
+            feedbackText.gameObject.SetActive(false);
+    }
+
+    void ShowFeedback(string msg)
+    {
+        if (feedbackText == null) return;
+
+        if (feedbackCo != null)
+            StopCoroutine(feedbackCo);
+
+        feedbackCo = StartCoroutine(FeedbackRoutine(msg));
+    }
+
+    IEnumerator FeedbackRoutine(string msg)
+    {
+        feedbackText.gameObject.SetActive(true);
+        feedbackText.text = msg;
+
+        yield return new WaitForSeconds(feedbackDuration);
+
+        feedbackText.gameObject.SetActive(false);
+        feedbackCo = null;
     }
 }
